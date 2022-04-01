@@ -3,6 +3,8 @@ A Pure CSS/HTML functional calendar that can correctly display months from Jan 1
 
 Live Demo: https://codepen.io/eliseodannunzio/pen/mdpMGgm
 
+Please feel free to reach out to me at eliseo.dannunzio@gmail.com to discuss the inner workings of this project!
+
 ## What dark magic is this?? ##
 How do you mean? It's a calendar. You select the month and the year with the dropdowns and from there, it will display the appopriate month for that year...
 
