@@ -1,0 +1,1245 @@
+/* Fraktur font for added effect! */
+/* Credit: j. 'mach' wust */
+@import url("https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap");
+
+body {
+	font-family: "UnifrakturMaguntia", cursive;
+	font-size: 1rem;
+}
+
+/* General Label */
+label {
+	height: 1rem;
+	z-index: 10 !important;
+}
+
+label.toggle {
+	font-family: Courier;
+	width: 0.75rem;
+	padding: 0.25rem;
+	position: absolute;
+	top: 0.25rem;
+}
+
+label:not(.toggle) {
+	background-color: #fff;
+	border-left: 1px solid rgb(0, 0, 0);
+	border-right: 1px solid rgb(0, 0, 0);
+	color: #000;
+	width: 1.5rem;
+	margin-bottom: 0;
+	margin-top: 0;
+	clear: both;
+	float: left;
+	position: relative;
+	padding: 2px 2px 2px 2px;
+}
+
+/* Century Labels and Inputs */
+.century {
+	display: none;
+}
+.century-label {
+	left: 8rem;
+}
+
+label[for="century-18"] {
+	border-top: 1px solid rgb(0, 0, 0);
+}
+label[for="century-29"] {
+	border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+#century-toggle {
+	display: none;
+}
+#century-toggle-label {
+	left: 10.25rem;
+}
+
+#century-toggle:not(:checked) ~ .century:not(:checked) + .century-label {
+	display: none;
+}
+
+#century-toggle:not(:checked) ~ .century:checked + .century-label {
+	display: block;
+	border: 1px solid rgb(0, 0, 0);
+	font-weight: 700;
+	color: red;
+}
+
+#century-toggle:checked ~ .century + .century-label {
+	display: block;
+}
+
+#century-toggle:checked ~ .century:checked + .century-label {
+	font-weight: 700;
+	color: red;
+}
+
+.century:checked ~ * {
+	--centuryKey: 0; /* Century Key */
+	--centuryLeap: 0; /* Is the century in the form of XX00 a leap year? */
+}
+
+.century[value="18"]:checked ~ *,
+.century[value="22"]:checked ~ *,
+.century[value="26"]:checked ~ * {
+	--centuryKey: 2;
+	--centuryLeap: 0;
+}
+
+.century[value="19"]:checked ~ *,
+.century[value="23"]:checked ~ *,
+.century[value="27"]:checked ~ * {
+	--centuryKey: 0;
+	--centuryLeap: 0;
+}
+
+.century[value="20"]:checked ~ *,
+.century[value="24"]:checked ~ *,
+.century[value="28"]:checked ~ * {
+	--centuryKey: 6;
+	--centuryLeap: 1;
+}
+
+.century[value="21"]:checked ~ *,
+.century[value="25"]:checked ~ *,
+.century[value="29"]:checked ~ * {
+	--centuryKey: 4;
+	--centuryLeap: 0;
+}
+
+/* Decade Labels and Inputs */
+.decade {
+	display: none;
+}
+.decade-label {
+	left: 10.75rem;
+	top: -22px;
+	width: 0.75rem !important;
+}
+
+label[for="decade-00"] {
+	border-top: 1px solid rgb(0, 0, 0);
+}
+label[for="decade-90"] {
+	border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+#decade-toggle {
+	display: none;
+}
+#decade-toggle-label {
+	left: 12.25rem;
+}
+
+#decade-toggle:not(:checked) ~ .decade:not(:checked) + .decade-label {
+	display: none;
+}
+
+#decade-toggle:not(:checked) ~ .decade:checked + .decade-label {
+	display: block;
+	border: 1px solid rgb(0, 0, 0);
+	font-weight: 700;
+	color: red;
+}
+
+#decade-toggle:checked ~ .decade + .decade-label {
+	display: block;
+}
+
+#decade-toggle:checked ~ .decade:checked + .decade-label {
+	font-weight: 700;
+	color: red;
+}
+
+/* Single Labels and Inputs */
+.single {
+	display: none;
+}
+.single-label {
+	left: 12.75rem;
+	top: -44px;
+	width: 0.75rem !important;
+}
+
+label[for="single-00"] {
+	border-top: 1px solid rgb(0, 0, 0);
+}
+label[for="single-09"] {
+	border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+#single-toggle {
+	display: none;
+}
+#single-toggle-label {
+	left: 14.25rem;
+}
+
+#single-toggle:not(:checked) ~ .single:not(:checked) + .single-label {
+	display: none;
+}
+
+#single-toggle:not(:checked) ~ .single:checked + .single-label {
+	display: block;
+	border: 1px solid rgb(0, 0, 0);
+	font-weight: 700;
+	color: red;
+}
+
+#single-toggle:checked ~ .single + .single-label {
+	display: block;
+}
+
+#single-toggle:checked ~ .single:checked + .single-label {
+	font-weight: 700;
+	color: red;
+}
+
+/* Default */
+.decade:checked ~ .single:checked ~ * {
+	--L2Ddiv4m7: 0; /* Last 2 digits of the year, with integer division by 4, mod 7 */
+	--L2Dm7: 0; /* Last 2 digits of the year, mod 7 */
+	--L2DLeap: 0; /* Are the last two digits normally associated with a leap year? */
+	--L2DDbl0: 0; /* Is it Double Zero? */
+}
+
+/* 00 to 09 */
+.decade[value="0"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 0;
+	--L2DLeap: 1;
+	--L2DDbl0: 1; /* The only different valu out of the lot for this variable */
+}
+.decade[value="0"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="0"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="0"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="0"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 4;
+	--L2DLeap: 1;
+}
+.decade[value="0"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="0"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="0"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="0"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 1;
+	--L2DLeap: 1;
+}
+.decade[value="0"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+
+/* 10 to 19 */
+.decade[value="1"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="1"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="1"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 5;
+	--L2DLeap: 1;
+}
+.decade[value="1"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="1"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="1"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="1"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 2;
+	--L2DLeap: 1;
+}
+.decade[value="1"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="1"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="1"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+
+/* 20 to 29 */
+.decade[value="2"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 6;
+	--L2DLeap: 1;
+}
+.decade[value="2"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="2"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="2"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="2"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 3;
+	--L2DLeap: 1;
+}
+.decade[value="2"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="2"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="2"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="2"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 0;
+	--L2DLeap: 1;
+}
+.decade[value="2"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+
+/* 30 to 39 */
+.decade[value="3"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="3"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="3"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 4;
+	--L2DLeap: 1;
+}
+.decade[value="3"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="3"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="3"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="3"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 1;
+	--L2DLeap: 1;
+}
+.decade[value="3"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="3"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="3"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+
+/* 40 to 49 */
+.decade[value="4"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 5;
+	--L2DLeap: 1;
+}
+.decade[value="4"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="4"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="4"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="4"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 2;
+	--L2DLeap: 1;
+}
+.decade[value="4"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="4"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="4"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="4"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 6;
+	--L2DLeap: 1;
+}
+.decade[value="4"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 3;
+	--L2DLeap: 1;
+}
+.decade[value="5"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 0;
+	--L2DLeap: 1;
+}
+.decade[value="5"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="5"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+
+/* 60 to 69 */
+.decade[value="6"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 4;
+	--L2DLeap: 1;
+}
+.decade[value="6"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="6"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="6"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="6"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 1;
+	--L2DLeap: 1;
+}
+.decade[value="6"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="6"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="6"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="6"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 5;
+	--L2DLeap: 1;
+}
+.decade[value="6"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+
+/* 70 to 79 */
+.decade[value="7"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="7"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="7"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 2;
+	--L2DLeap: 1;
+}
+.decade[value="7"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="7"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="7"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 4;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="7"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 6;
+	--L2DLeap: 1;
+}
+.decade[value="7"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="7"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="7"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 5;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+
+/* 70 to 79 */
+.decade[value="8"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 3;
+	--L2DLeap: 1;
+}
+.decade[value="8"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="8"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+.decade[value="8"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 6;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="8"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 0;
+	--L2DLeap: 1;
+}
+.decade[value="8"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+.decade[value="8"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="8"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 0;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="8"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 4;
+	--L2DLeap: 1;
+}
+.decade[value="8"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 5;
+	--L2DLeap: 0;
+}
+
+/* 90 to 09 */
+.decade[value="9"]:checked ~ .single[value="0"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="9"]:checked ~ .single[value="1"]:checked ~ * {
+	--L2Ddiv4m7: 1;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="9"]:checked ~ .single[value="2"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 1;
+	--L2DLeap: 1;
+}
+.decade[value="9"]:checked ~ .single[value="3"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 2;
+	--L2DLeap: 0;
+}
+.decade[value="9"]:checked ~ .single[value="4"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 3;
+	--L2DLeap: 0;
+}
+.decade[value="9"]:checked ~ .single[value="5"]:checked ~ * {
+	--L2Ddiv4m7: 2;
+	--L2Dm7: 4;
+	--L2DLeap: 0;
+}
+.decade[value="9"]:checked ~ .single[value="6"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 5;
+	--L2DLeap: 1;
+}
+.decade[value="9"]:checked ~ .single[value="7"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 6;
+	--L2DLeap: 0;
+}
+.decade[value="9"]:checked ~ .single[value="8"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 0;
+	--L2DLeap: 0;
+}
+.decade[value="9"]:checked ~ .single[value="9"]:checked ~ * {
+	--L2Ddiv4m7: 3;
+	--L2Dm7: 1;
+	--L2DLeap: 0;
+}
+
+/* Month Labels and Inputs */
+.month {
+	display: none;
+}
+.month-label {
+	left: 0.5rem;
+	width: 6rem !important;
+	top: -66px;
+}
+
+label[for="month-01"] {
+	border-top: 1px solid rgb(0, 0, 0);
+}
+label[for="month-12"] {
+	border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+#month-toggle {
+	display: none;
+}
+#month-toggle-label {
+	left: 7.25rem;
+}
+
+#month-toggle:not(:checked) ~ .month:not(:checked) + .month-label {
+	display: none;
+}
+
+#month-toggle:not(:checked) ~ .month:checked + .month-label {
+	display: block;
+	border: 1px solid rgb(0, 0, 0);
+	font-weight: 700;
+	color: red;
+}
+
+#month-toggle:checked ~ .month + .month-label {
+	display: block;
+}
+
+#month-toggle:checked ~ .month:checked + .month-label {
+	font-weight: 700;
+	color: red;
+}
+
+.month:checked ~ * {
+	--monthLeap: 0; /* Sets as default if not defined within the specifc month block */
+	--isFeb: 0; /* Is it February? */
+}
+
+.month[value="1"]:checked ~ * {
+	--monthKey: 1;
+	--v29: 1;
+	--v30: 1;
+	--v31: 1;
+	--monthLeap: 1;
+}
+
+.month[value="2"]:checked ~ * {
+	--monthKey: 4;
+	--v29: 0;
+	--v30: 0;
+	--v31: 0;
+	--monthLeap: 1;
+	--isFeb: 1;
+}
+
+.month[value="3"]:checked ~ * {
+	--monthKey: 4;
+	--v29: 1;
+	--v30: 1;
+	--v31: 1;
+}
+
+.month[value="4"]:checked ~ * {
+	--monthKey: 0;
+	--v29: 1;
+	--v30: 1;
+	--v31: 0;
+}
+
+.month[value="5"]:checked ~ * {
+	--monthKey: 2;
+	--v29: 1;
+	--v30: 1;
+	--v31: 1;
+}
+
+.month[value="6"]:checked ~ * {
+	--monthKey: 5;
+	--v29: 1;
+	--v30: 1;
+	--v31: 0;
+}
+
+.month[value="7"]:checked ~ * {
+	--monthKey: 0;
+	--v29: 1;
+	--v30: 1;
+	--v31: 1;
+}
+
+.month[value="8"]:checked ~ * {
+	--monthKey: 3;
+	--v29: 1;
+	--v30: 1;
+	--v31: 1;
+}
+
+.month[value="9"]:checked ~ * {
+	--monthKey: 6;
+	--v29: 1;
+	--v30: 1;
+	--v31: 0;
+}
+
+.month[value="10"]:checked ~ * {
+	--monthKey: 1;
+	--v29: 1;
+	--v30: 1;
+	--v31: 1;
+}
+
+.month[value="11"]:checked ~ * {
+	--monthKey: 4;
+	--v29: 1;
+	--v30: 1;
+	--v31: 0;
+}
+
+.month[value="12"]:checked ~ * {
+	--monthKey: 6;
+	--v29: 1;
+	--v30: 1;
+	--v31: 1;
+}
+
+/* Toggle Glitches */
+#century-toggle:checked
+	~ #month-toggle:not(:checked)
+	~ .month:checked
+	+ .month-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 1rem;
+}
+
+#century-toggle:checked ~ #month-toggle:checked ~ .month + .month-label {
+	position: absolute;
+	top: calc((var(--monthIndex) * 1.25 + 0.5625) * 1rem);
+	left: 1rem;
+}
+
+#century-toggle:checked ~ #month-toggle:checked ~ #month-01 + .month-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 1rem;
+}
+
+#century-toggle:checked
+	~ #decade-toggle:not(:checked)
+	~ .decade:checked
+	+ .decade-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 11.25rem;
+}
+
+#century-toggle:checked ~ #decade-toggle:checked ~ .decade + .decade-label {
+	position: absolute;
+	top: calc((var(--decadeIndex) * 1.25 + 0.5625) * 1rem);
+	left: 11.25rem;
+}
+
+#century-toggle:checked ~ #decade-toggle:checked ~ #decade-00 + .decade-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 11.25rem;
+}
+
+#century-toggle:checked
+	~ #single-toggle:not(:checked)
+	~ .single:checked
+	+ .single-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 13.25rem;
+}
+
+#century-toggle:checked ~ #single-toggle:checked ~ .single + .single-label {
+	position: absolute;
+	top: calc((var(--singleIndex) * 1.25 + 0.5625) * 1rem);
+	left: 13.25rem;
+}
+
+#century-toggle:checked ~ #single-toggle:checked ~ #single-00 + .single-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 13.25rem;
+}
+
+#decade-toggle:checked
+	~ #month-toggle:not(:checked)
+	~ .month:checked
+	+ .month-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 1rem;
+}
+
+#decade-toggle:checked ~ #month-toggle:checked ~ .month + .month-label {
+	position: absolute;
+	top: calc((var(--monthIndex) * 1.25 + 0.5625) * 1rem);
+	left: 1rem;
+}
+
+#decade-toggle:checked ~ #month-toggle:checked ~ #month-01 + .month-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 1rem;
+}
+
+#decade-toggle:checked
+	~ #single-toggle:not(:checked)
+	~ .single:checked
+	+ .single-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 13.25rem;
+}
+
+#decade-toggle:checked ~ #single-toggle:checked ~ .single + .single-label {
+	position: absolute;
+	top: calc((var(--singleIndex) * 1.25 + 0.5625) * 1rem);
+	left: 13.25rem;
+}
+
+#decade-toggle:checked ~ #single-toggle:checked ~ #single-00 + .single-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 13.25rem;
+}
+
+#single-toggle:checked
+	~ #month-toggle:not(:checked)
+	~ .month:checked
+	+ .month-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 1rem;
+}
+
+#single-toggle:checked ~ #month-toggle:checked ~ .month + .month-label {
+	position: absolute;
+	top: calc((var(--monthIndex) * 1.25 + 0.5625) * 1rem);
+	left: 1rem;
+}
+
+#single-toggle:checked ~ #month-toggle:checked ~ #month-01 + .month-label {
+	position: absolute;
+	top: 0.5rem;
+	left: 1rem;
+}
+
+label,
+input {
+	margin-left: 100px;
+}
+
+/* Calculation section */
+
+.century:checked ~ *,
+.decade:checked ~ *,
+.single:checked ~ *,
+.month:checked ~ * {
+	/* STANDARD CALCULATION OF DOW ALGORITHM */
+	/*
+  1) Take the last two digits of the year, and divide by 4, discarding any fraction.
+  2) Add the day of the month.
+  3) Add the month's key value:
+  JFM AMJ JAS OND
+  144 025 036 146
+  4) Subtract 1 for January or February of a leap year
+  5) For a Gregorian date, add 0 for 1900's, 6 for 2000's, 4 for 1700's, 2 for 1800's; for other years, add or subtract multiples of 400.
+  6) Add the last two digits of the year.
+  7) Divide by 7 and take the remainder.
+
+	I was initially going to use binary registers and do A LOT of Boolean math to work this out, along with some cool MOD 7 algorithm I found in the book "Hacker's Delight", but all those calulations results in too much nesting of calc() calls.
+
+So the new approach hinges on the axiom that:
+
+  (A + B + C + D) mod E = (A mod E + B mod E + C mod E + D mod E) mod E.
+	
+	As a result we can do some simple decimal math to get this to work. We reduce every part to a value 
+	between 0 and 6 by using a mod 7 on each number, and at the end we cast out sevens from the sum of those 
+	values to get our DOW index. However, this DOW results in a final value	where 0 = Saturday through to 6 = Friday, 
+	so to resolve this we subtract 1 before implementing the final "mod 7" and then add 1, causing the index to shift to 
+	0 = Sunday through to 6 = Saturday.
+
+	Now, given that we've taken on a slightly different approach that doesn't require too much in the way of binary registers except for
+	logical stuff (calculation of Leap Year and whether we're in February, which also helps determine the display of Feb 29), 
+	the process is as follows:
+
+	1) Get the last two digits, integer divide by 4, and get the modulo 7 of that. This is part (A)
+	2) As we are subtracting 1 at the very end before the final "mod 7", we no longer need to add 1 for the day (Bonus!)
+	3) Add the month key, subtracting 1 if it is January or February in a leap year. This is part (B)
+	4) Add the century key. This is part (C)
+	5) Get the last two digits again and get the modulo 7 of that value. Add this result. This is part (D)
+	6) Cast out the sevens (i.e. get the modulo 7). As you can see, A, B, C and D can go as high as 6 each, 
+			so the maximum value is 24 at this point before we apply the modulo 7. How are we going to apply a modulo 7? 
+			We are first going to compare the value against 14. If the value is greater than or equal to 14, we subtract 14.
+			We then compare that result against 7. If the value is greater than or equal to 7, we subtract 7.
+
+			This means effectively we can have four different scenarios:
+	
+			a) if the value is between 0 and 6, nothing gets subtracted,
+			b) if the value is between 7 and 13, only 7 gets subtracted,
+			c) if the value is between 14 and 20, only 14 gets subtracted; or
+			d) if the value is 21 or greater, which means 21 gets subtracted (14 and then 7)
+	
+			Resulting in a perfect modulo 7 with two branchless comparisons.
+
+			This overall method reduces our calculations to far fewer than what we'd be doing on binary registers alone, 
+			thus reducing the likelihood of hitting the calc() nesting limit. Not only that, we don't have to worry too much 
+			about binary addition and subtraction...
+	
+	/* Calculation of leap year boolean */
+
+	/* So here's what we know. A year is a leap year if (a), the last two digits of the year are divisible by 4;
+		and (b), if the special case of it being a 00 year, that the century is also divisible by 4.
+
+		That being the case, we now have a three-way truth table:
+
+		Century Divisible by 4, represented by C (--centuryLeap)
+		Last 2 Digits Divisible by 4, represented by D (--L2DLeap)
+		Last 2 Digits Equal 00, represented by Z (--L2DDbl0)
+
+		C 1 1 1 1 0 0 0 0
+		D 1 1 0 0 1 1 0 0
+		Z 1 0 1 0 1 0 1 0
+		R 1 1 0 0 0 1 0 0
+
+  Examples
+  a) 1907, b) n/a, c) 1908, d) 1900, e) 2001, f) n/a, g) 2008, h) 2000
+
+  This truth table is equivalent to: (C AND D) OR (D AND NOT Z)
+
+  converted to AND-NOT format:
+
+  (NOT ((NOT C) AND Z)) AND D; i.e. (1 - (1 - C) * Z) * D
+
+	Luckily C, D and Z are all Boolean pulses (either 1 or 0), so we can calculate this, resulting in either a 1 (True) or 0 (False). 
+*/
+
+	--isLeapYear: calc(
+		(1 - (1 - var(--centuryLeap)) * var(--L2DDbl0)) * var(--L2DLeap)
+	);
+
+	/*
+  	Calculate month value with leap year taken into consideration
+	*/
+
+	--monthKeyRevised: calc(
+		var(--monthKey) - var(--isLeapYear) * var(--monthLeap)
+	);
+
+	/* *** CALCULATION OF DAY OF WEEK *** */
+
+	--preMod7: calc(
+		var(--L2Ddiv4m7) + var(--monthKeyRevised) + var(--centuryKey) + var(--L2Dm7)
+	);
+
+	/* Casting out 7's (i.e. performing an X mod 7) */
+	/*
+		To do this we need to basically develop two GTE functions, one to use for (x GTE 14) and the other for (x GTE 7)
+		Using the following CodePen of mine: https://codepen.io/eliseodannunzio/details/xxprEJZ we have to define the following:
+	
+		An error precision setting (eps) of 0.1 will be used to determine the GE functions.
+		This gets introduced directly into the calculations as it is a static known value. 
+	
+		Because: ABS(X) = X - 2 * min(x, 0), and GTE(x, y) = (max(x-y, -eps) + eps) / (abs(x-y) + eps); we will need to work out ABS(X-Y)
+	*/
+
+	/* First round, Y = 14, X is our initial value */
+	--X_m_14: calc(var(--preMod7) - 14);
+	/* Calculate abs_preMod7_minus_14 */
+	--abs_X_m_14: calc(var(--X_m_14) - 2 * min(var(--X_m_14), 0));
+	/* Calculate GTE(x, 14) function */
+	--gte_X_14: calc((max(var(--X_m_14), -0.1) + 0.1) / (var(--abs_X_m_14) + 0.1));
+
+	/* Cast out 14 if possible */
+	--X_cast_14: calc(var(--preMod7) - var(--gte_X_14) * 14);
+
+	/* Second round, Y = 7, X is --X_cast_14 */
+	--X_c_14_m_7: calc(var(--X_cast_14) - 7);
+	/* Calculate abs(x cast 14 - 7) */
+	--abs_X_c_14_m_7: calc(var(--X_c_14_m_7) - 2 * min(var(--X_c_14_m_7), 0));
+	/* Calculate GTE(x cast 14, 7) function */
+	--gte_Xc14_7: calc(
+		(max(var(--X_c_14_m_7), -0.1) + 0.1) / (var(--abs_X_c_14_m_7) + 0.1)
+	);
+
+	/* Cast out 7 if possible, revealing day of week */
+	--DOW: calc(var(--X_cast_14) - var(--gte_Xc14_7) * 7 + 1);
+	/* ^^ Remembering we need to day shift it to get 0 = Sunday to 6 = Saturday, whivh is  */
+
+	/* 	counter-reset: L2Ddiv4m7 var(--L2Ddiv4m7, -1) monthKey var(--monthKey, -1)
+		monthLeap var(--monthLeap) isLeapYear var(--isLeapYear) monthKeyRevised
+		var(--monthKeyRevised) centuryKey var(--centuryKey, -1) L2Dm7 var(--L2Dm7, -1)
+		preMod7 var(--preMod7) DOW var(--DOW); */
+}
+
+/* I'm leaving this debug window here so that developers can see how these values are calculated */
+
+#cpu {
+	/* 	position: relative;
+	top: 10rem;
+	background-color: yellow;
+	height: 25rem;
+	width: 23rem;
+	color: black; */
+	display: none;
+}
+
+/* #cpu > * {
+	text-align: left;
+	float: left;
+} */
+
+/* #cpu:after {
+	content: "L2Ddiv4m7:" counter(L2Ddiv4m7) " monthKey:" counter(monthKey)
+		" monthLeap:" counter(monthLeap) " isLeapYear:" counter(isLeapYear)
+		" monthKeyRevised:" counter(monthKeyRevised) " centuryKey:"
+		counter(centuryKey) " L2Dm7:" counter(L2Dm7) " preMod7:" counter(preMod7)
+		" DOW: " counter(DOW);
+	position: absolute;
+	top: 4rem;
+	left: 0;
+} */
+
+/* Calendar Styling */
+
+.calendar-wrapper {
+	width: 280px;
+	position: absolute;
+	top: 32px;
+	z-index: 0;
+	margin-top: 1rem;
+	font-size: 2rem;
+}
+
+.calendar {
+	color: #000;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	z-index: 0;
+}
+
+.weekday {
+	background: #eee;
+	z-index: 0;
+	padding: 2px 8px 2px 2px;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	z-index: 0;
+}
+
+ul li:not(.weekday) {
+	z-index: 0;
+	text-align: right;
+	padding-right: 10px;
+}
+
+#day-01 {
+	grid-column-start: var(--DOW); /* To be changed */
+}
+
+#day-29 {
+	opacity: calc(
+		var(--v29) + var(--isLeapYear) * var(--isFeb) - var(--v29) * var(--isFeb)
+	);
+	/* 
+		Explanation:
+			29 L F Show29?
+		   0 0 0 0 (These conditions will never happen together)
+			 0 0 1 0 (Common years display in Feb, no Feb 29)
+			 0 1 0 0 (These conditions will never happen together)
+			 0 1 1 1 (Leap years display in Feb, show Feb 29)
+			 1 0 0 1 (Common years display for other months, show XXX 29)
+			 1 0 1 0 (These conditions will never happen together)
+			 1 1 0 1 (Leap years display for other months, show XXX 29)
+			 1 1 1 1 (These conditions will never happen together, default to show Feb 29)
+
+		Equivalent Boolean equation for this truth table: (a AND NOT c) OR (b AND c)
+		If we express this in AND-NOT format we get: (NOT ((NOT a) AND (NOT c))) AND (NOT ((NOT b) AND c))
+		Algebraically, this is equivalent to: -abc^2 + abc + ac^2 - 2ac + a + bc^2 - c^2 + c
+
+		Using the Boolean Pulse rule (i.e. because all values are either 1 or 0, x^n = x) all indices can be stripped:
+		-abc + abc + ac - 2ac + a + bc - c + c
+
+		This simplifies to: 
+		a + bc - ac 
+	
+		Using a = var(--v29), b = var(--isLeapYear) and c = var(--isFeb) we get the calculation above.
+	*/
+}
+
+#day-30 {
+	opacity: var(--v30);
+}
+
+#day-31 {
+	opacity: var(--v31);
+}
