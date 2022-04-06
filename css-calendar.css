@@ -1186,7 +1186,7 @@ ul li:not(.weekday) {
 }
 
 #day-01 {
-	grid-column-start: var(--DOW); /* To be changed */
+	grid-column-start: var(--DOW);
 }
 
 #day-29 {
