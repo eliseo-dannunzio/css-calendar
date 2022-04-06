@@ -3,8 +3,8 @@
 	Set RUV (Rounding Underflow Value) - The RUV is nothing short of a CSS miracle. It represents the 
 	minimum subnormal positive double. The RUV when multiplied by the value to be rounded underflows the value, truncating it at the decimal point. 
 	When one then divides the truncated value back by the RUV, it results in a rounded version of the value. 
-	This assumes that all browsers you support use 64-bit floating point values. If not this screws up royally... 
-	But when was the last time you used a browser that only supported 32-bit floats?
+	This assumes that all browsers you support use 64-bit floating point values. If your browser doesn't, this will screw up royally... 
+	But then again, when was the last time you used a browser that only supported 32-bit floats?
 
 	PS: This value can be used to round to 1 decimal place, 2 decimal places etc, by shifting the exponent (0dp: -324, 1dp: -323, 2dp: -322, etc.)
 	
