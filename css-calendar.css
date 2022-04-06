@@ -1,9 +1,20 @@
-/* Fraktur font for added effect! */
-/* Credit: j. 'mach' wust */
-/*@import url("https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap");*/
+:root {
+	/* 
+	Set RUV (Rounding Underflow Value) - The RUV is nothing short of a CSS miracle. It represents the 
+	minimum subnormal positive double. The RUV when multiplied by the value to be rounded underflows the value, truncating it at the decimal point. 
+	When one then divides the truncated value back by the RUV, it results in a rounded version of the value. 
+	This assumes that all browsers you support use 64-bit floating point values. If not this screws up royally... 
+	But when was the last time you used a browser that only supported 32-bit floats?
+
+	PS: This value can be used to round to 1 decimal place, 2 decimal places etc, by shifting the exponent (0dp: -324, 1dp: -323, 2dp: -322, etc.)
+	
+	From this you can now have ROUND(), INT() and MOD() functions
+*/
+
+	--ruv: 4.9406564584124654e-324;
+}
 
 body {
-	/*font-family: "UnifrakturMaguntia", cursive;*/
 	font-family: Courier;
 	font-size: 1rem;
 }
@@ -1033,19 +1044,10 @@ So the new approach hinges on the axiom that:
 	3) Add the month key, subtracting 1 if it is January or February in a leap year. This is part (B)
 	4) Add the century key. This is part (C)
 	5) Get the last two digits again and get the modulo 7 of that value. Add this result. This is part (D)
-	6) Cast out the sevens (i.e. get the modulo 7). As you can see, A, B, C and D can go as high as 6 each, 
-			so the maximum value is 24 at this point before we apply the modulo 7. How are we going to apply a modulo 7? 
-			We are first going to compare the value against 14. If the value is greater than or equal to 14, we subtract 14.
-			We then compare that result against 7. If the value is greater than or equal to 7, we subtract 7.
-
-			This means effectively we can have four different scenarios:
+	6) New approach, using an integer divide to get the nearest multiple of 7 to (A + B + C + D), and
+	then subtracting it from (A + B + C + D). The end result is the MOD 7 we need. We then day shift it by 1 so that we get the 0 = Sunday -> 6 = Saturday layout.
 	
-			a) if the value is between 0 and 6, nothing gets subtracted,
-			b) if the value is between 7 and 13, only 7 gets subtracted,
-			c) if the value is between 14 and 20, only 14 gets subtracted; or
-			d) if the value is 21 or greater, which means 21 gets subtracted (14 and then 7)
-	
-			Resulting in a perfect modulo 7 with two branchless comparisons.
+			Resulting in a perfect modulo 7 with no reliance on branchless comparison logic operators.
 
 			This overall method reduces our calculations to far fewer than what we'd be doing on binary registers alone, 
 			thus reducing the likelihood of hitting the calc() nesting limit. Not only that, we don't have to worry too much 
@@ -1093,43 +1095,24 @@ So the new approach hinges on the axiom that:
 
 	/* *** CALCULATION OF DAY OF WEEK *** */
 
-	--preMod7: calc(
-		var(--L2Ddiv4m7) + var(--monthKeyRevised) + var(--centuryKey) + var(--L2Dm7)
-	);
-
-	/* Casting out 7's (i.e. performing an X mod 7) */
-	/*
-		To do this we need to basically develop two GTE functions, one to use for (x GTE 14) and the other for (x GTE 7)
-		Using the following CodePen of mine: https://codepen.io/eliseodannunzio/details/xxprEJZ we have to define the following:
-	
-		An error precision setting (eps) of 0.1 will be used to determine the GE functions.
-		This gets introduced directly into the calculations as it is a static known value. 
-	
-		Because: ABS(X) = X - 2 * min(x, 0), and GTE(x, y) = (max(x-y, -eps) + eps) / (abs(x-y) + eps); we will need to work out ABS(X-Y)
+	/* 
+		This is simply a case of getting the value of the values we need to get our target value, 
+		integer divide by 7 and then subtracting 7 times that integer quotient from our original 
+		target value to get the MOD 7; adding 1 to day shift it so that we get 0 = Sunday -> 
+		6 = Saturday.
 	*/
 
-	/* First round, Y = 14, X is our initial value */
-	--X_m_14: calc(var(--preMod7) - 14);
-	/* Calculate abs_preMod7_minus_14 */
-	--abs_X_m_14: calc(var(--X_m_14) - 2 * min(var(--X_m_14), 0));
-	/* Calculate GTE(x, 14) function */
-	--gte_X_14: calc((max(var(--X_m_14), -0.1) + 0.1) / (var(--abs_X_m_14) + 0.1));
+	--preMod7: calc(
+		var(--L2Ddiv4m7) + var(--monthKeyRevised) + var(--centuryKey) + var(--L2Dm7)
+	); /* Work out the final value before applying MOD 7 */
 
-	/* Cast out 14 if possible */
-	--X_cast_14: calc(var(--preMod7) - var(--gte_X_14) * 14);
+	--preMod7IntDiv7: calc(
+		(var(--preMod7) / 7 - 0.5) * var(--ruv) / var(--ruv)
+	); /* Perform the INT() on (preMod7 / 7) */
 
-	/* Second round, Y = 7, X is --X_cast_14 */
-	--X_c_14_m_7: calc(var(--X_cast_14) - 7);
-	/* Calculate abs(x cast 14 - 7) */
-	--abs_X_c_14_m_7: calc(var(--X_c_14_m_7) - 2 * min(var(--X_c_14_m_7), 0));
-	/* Calculate GTE(x cast 14, 7) function */
-	--gte_Xc14_7: calc(
-		(max(var(--X_c_14_m_7), -0.1) + 0.1) / (var(--abs_X_c_14_m_7) + 0.1)
-	);
-
-	/* Cast out 7 if possible, revealing day of week */
-	--DOW: calc(var(--X_cast_14) - var(--gte_Xc14_7) * 7 + 1);
-	/* ^^ Remembering we need to day shift it to get 0 = Sunday to 6 = Saturday, whivh is  */
+	--DOW: calc(
+		var(--preMod7) - var(--preMod7IntDiv7) * 7 + 1
+	); /* Subtract 7 * preMod7IntDiv7 from preMod7 to get the MOD 7, add 1 for the day shift.
 
 	/* 	counter-reset: L2Ddiv4m7 var(--L2Ddiv4m7, -1) monthKey var(--monthKey, -1)
 		monthLeap var(--monthLeap) isLeapYear var(--isLeapYear) monthKeyRevised
@@ -1141,10 +1124,9 @@ So the new approach hinges on the axiom that:
 
 #cpu {
 	/* 	position: relative;
-	top: 10rem;
+	top: 17rem;
 	background-color: yellow;
 	height: 25rem;
-	width: 23rem;
 	color: black; */
 	display: none;
 }
