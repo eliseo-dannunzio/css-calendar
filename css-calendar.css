@@ -8,7 +8,7 @@
 
 	PS: This value can be used to round to 1 decimal place, 2 decimal places etc, by shifting the exponent (0dp: -324, 1dp: -323, 2dp: -322, etc.)
 	
-	From this you can now have ROUND(), INT() and MOD() functions
+	From this you can now have ROUND(), INT()/FLOOR(), CEILING() and MOD() functions
 */
 
 	--ruv: 4.9406564584124654e-324;
